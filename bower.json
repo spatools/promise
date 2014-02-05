@@ -4,7 +4,7 @@
   "authors": [
     "SPA Tools"
   ],
-  "description": "An Ecmascript 6 Polyfill strictly following specification + Extensions",
+  "description": "An Ecmascript 6 Polyfill which is strictly following specification + Extensions",
   "main": "promise.js",
   "keywords": [
     "promise",
