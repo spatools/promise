@@ -35,7 +35,7 @@ module.exports = function (grunt) {
                 }
             },
             test: {
-                src: "<%= paths.test %>/**/*.ts",
+                src: "<%= paths.test %>/**/*.ts"
             },
             dist: {
                 src: "<%= paths.src %>/**/*.ts",
@@ -125,5 +125,5 @@ module.exports = function (grunt) {
     grunt.registerTask("dev", ["tslint:dev", "typescript:dev", "jshint:dev"]);
     grunt.registerTask("test", ["dev", "tslint:test", "typescript:test", "jshint:test", "mocha:test"]);
 
-    grunt.registerTask("default", ["tsd:refresh", "test"]);
+    grunt.registerTask("default", ["clean", "test"]);
 };
