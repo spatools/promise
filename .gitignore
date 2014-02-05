@@ -28,7 +28,6 @@ src/*.js.map
 src/promise/*.d.ts
 src/promise/*.js
 src/promise/*.js.map
-tests/*.d.ts
 tests/*.js
 tests/*.js.map
 tests/helpers/*.d.ts

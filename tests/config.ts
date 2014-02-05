@@ -1,5 +1,5 @@
 ﻿/// <reference path="../src/promise.d.ts" />
-/// <reference path="../typings/requirejs/require.d.ts" />
+/// <reference path="./tests.d.ts" />
 /// <reference path="../typings/mocha/mocha.d.ts" />
 /// <reference path="../typings/should/should.d.ts" />
 /// <reference path="../typings/sinon/sinon.d.ts" />
