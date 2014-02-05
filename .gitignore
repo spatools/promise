@@ -25,8 +25,15 @@ typings/
 # Keep only ts file in src folder
 src/*.js
 src/*.js.map
+src/promise/*.d.ts
 src/promise/*.js
 src/promise/*.js.map
+tests/*.d.ts
+tests/*.js
+tests/*.js.map
+tests/helpers/*.d.ts
+tests/helpers/*.js
+tests/helpers/*.js.map
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
