@@ -1,4 +1,4 @@
-﻿# promise-ext
+﻿# promise-ext [![Build Status](https://travis-ci.org/spatools/promise.png)](https://travis-ci.org/spatools/promise) [![NPM version](https://badge.fury.io/js/promise-ext.png)](http://badge.fury.io/js/promise-ext)
 
 An Ecmascript 6 Polyfill strictly following specification.
 Also contains extensions like timeout Promise, Processing Queue...
