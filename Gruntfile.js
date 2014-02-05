@@ -35,7 +35,7 @@ module.exports = function (grunt) {
                 }
             },
             test: {
-                src: "<%= paths.src %>/**/*.ts",
+                src: "<%= paths.test %>/**/*.ts",
             },
             dist: {
                 src: "<%= paths.src %>/**/*.ts",
