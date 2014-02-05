@@ -5,16 +5,16 @@ Also contains extensions like timeout Promise, Processing Queue...
 
 ## Installation
 
-Using NuGet:
-
-```console
-$ Install-Package PromiseExt
-```
-
 Using Bower:
 
 ```console
 $ bower install promise-ext --save
+```
+
+Using NuGet:
+
+```console
+$ Install-Package PromiseExt
 ```
 
 Using NPM:
