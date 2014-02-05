@@ -13,15 +13,15 @@ describe("Promise Constructor", () => {
     afterEach(() => { initializePromiseStub.restore(); });
 
     it("should throws a TypeError if given argument is not a Function", () => {
-        (() => { new Promise({}); }).should.throw(TypeError);
-        (() => { new Promise(null); }).should.throw(TypeError);
-        (() => { new Promise("test"); }).should.throw(TypeError);
+        var P: any = Promise;
+        (() => { new P({}); }).should.throw(TypeError);
+        (() => { new P(null); }).should.throw(TypeError);
+        (() => { new P("test"); }).should.throw(TypeError);
     });
 
     it("should throws a TypeError if not called using new keyword", () => {
-        (function () {
-            Promise(null);
-        }).should.throw(TypeError);
+        var P: any = Promise;
+         (() => { P(null); }).should.throw(TypeError);
     });
 
     it("should call InitializePromise Abstract Operations with itself and executor method", () => {
