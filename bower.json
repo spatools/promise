@@ -1,0 +1,33 @@
+{
+  "name": "promise-ext",
+  "version": "0.1.0",
+  "authors": [
+    "SPA Tools"
+  ],
+  "description": "An Ecmascript 6 Polyfill strictly following specification + Extensions",
+  "main": "promise.js",
+  "keywords": [
+    "promise",
+    "es6",
+    "ecmascript6",
+    "extensions",
+    "queue"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/spatools/promise",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "mocha": "~1.17.1",
+    "should": "3.1.2",
+    "sinon": "~1.8.1"
+  },
+  "devDependencies": {
+    "requirejs": "~2.1.10"
+  }
+}
