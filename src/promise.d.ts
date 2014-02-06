@@ -5,6 +5,8 @@
     all(promises: Promise[]): Promise;
     race(promises: Promise[]): Promise;
 
+    cast(value: any): Promise;
+
     resolve(value: any): Promise;
 
     reject(reason: Error): Promise;
@@ -67,9 +69,14 @@ interface Window {
     Promise: PromiseConstructor;
 }
 
+declare module "promise" {
+    export = Promise;
+}
+
 declare var Promise: PromiseConstructor;
 
 declare var process: any;
 declare var require: any;
 declare var global: any;
 declare var define: any;
+declare var exports: any;

@@ -1,8 +1,9 @@
 /// <reference path="promise.d.ts" />
 
 // NodeJS : no need to check as node does not support es6 yet
-if (typeof global !== "undefined") {
+if (typeof process !== "undefined" && {}.toString.call(process) === "[object process]") {
     global.Promise = require("./promise/class");
+    exports = global.Promise;
 }
 // Browser : check for implementation and apply it to window
 else {
@@ -25,15 +26,9 @@ else {
         };
 
     if (needPromise()) {
-        define(["./promise/class"], (Promise) => {
-            window.Promise = Promise;
-
-            return {
-                Promise: Promise
-            };
-        });
+        define(["src/promise/class"], (Promise) => Promise);
     }
     else {
-        define([], {});
+        define([], () => window.Promise);
     }
 }
