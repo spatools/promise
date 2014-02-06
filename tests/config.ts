@@ -5,12 +5,14 @@
 /// <reference path="../typings/sinon/sinon.d.ts" />
 
 requirejs.config({
-    baseUrl: "../",
+    //baseUrl: "../",
 
     paths: {
-        "mocha": "bower_components/mocha/mocha",
-        "should": "bower_components/should/should",
-        "sinon": "bower_components/sinon/sinon"
+        "src/promise": "../src/promise",
+        "promise": "../src/promise",
+        "mocha": "../bower_components/mocha/mocha",
+        "should": "../bower_components/should/should",
+        "sinon": "../bower_components/sinon/sinon"
     },
 
     shim: {
@@ -24,11 +26,12 @@ requirejs.config({
 (<any>window).notrack = true;
 
 var tests = [
-    "tests/abstract",
-    "tests/tasks",
-    "tests/constructor",
-    "tests/prototype",
-    "tests/static"
+    "abstract",
+    "tasks",
+    "constructor",
+    "prototype",
+    "static",
+    "extensions",
 ];
 
 require(tests, function () {

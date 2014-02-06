@@ -1,7 +1,7 @@
 /// <reference path="../../src/promise.d.ts" />
 /// <reference path="../../typings/sinon/sinon.d.ts" />
 
-import Promise = require("src/promise/class");
+import Promise = require("promise");
 import abstract = require("src/promise/abstract");
 import commonHelpers = require("./common");
 
