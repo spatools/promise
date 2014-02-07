@@ -92,8 +92,8 @@ export function createResolutionHandlerFunction(promise: Promise, onFulfilled: P
         if (updatePromiseFromPotentialThenable(resolution, capability)) {
             return utils.invoke(capability.promise, "then", [onFulfilled, onRejected]);
         }
-
-        onFulfilled.call(undefined, resolution);
+        
+        return onFulfilled.call(undefined, resolution);
     };
 }
 
