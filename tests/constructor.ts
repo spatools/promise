@@ -25,7 +25,6 @@ describe("Promise Constructor", () => {
     });
 
     it("should call InitializePromise Abstract Operations with itself and executor method", () => {
-        console.log(Promise);
         var executor = commonHelpers.noop(),
             promise = new Promise(executor);
 
