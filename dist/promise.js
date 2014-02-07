@@ -1,5 +1,6 @@
-if (typeof global !== "undefined") {
+if (typeof process !== "undefined" && {}.toString.call(process) === "[object process]") {
     global.Promise = require("./promise/class");
+    exports = global.Promise;
 } else {
     var isWellImplemented = function () {
         var resolve;
@@ -8,19 +9,17 @@ if (typeof global !== "undefined") {
         });
 
         return typeof resolve === "function";
-    }, needPromise = function () {
+    }, hasPromise = function () {
         return "Promise" in window && "cast" in window.Promise && "resolve" in window.Promise && "reject" in window.Promise && "all" in window.Promise && "race" in window.Promise && isWellImplemented();
     };
 
-    if (needPromise()) {
-        define(["./promise/class"], function (Promise) {
-            window.Promise = Promise;
-
-            return {
-                Promise: Promise
-            };
+    if (!hasPromise()) {
+        define(["promise/class"], function (Promise) {
+            return Promise;
         });
     } else {
-        define([], {});
+        define([], function () {
+            return window.Promise;
+        });
     }
 }

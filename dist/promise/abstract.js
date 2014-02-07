@@ -65,7 +65,7 @@ define(["require", "exports", "./status", "./tasks", "./utils"], function(requir
                 return utils.invoke(capability.promise, "then", [onFulfilled, onRejected]);
             }
 
-            onFulfilled.call(undefined, resolution);
+            return onFulfilled.call(undefined, resolution);
         };
     }
     exports.createResolutionHandlerFunction = createResolutionHandlerFunction;
