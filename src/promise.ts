@@ -13,7 +13,7 @@ else {
 
             return typeof resolve === "function";
         },
-        needPromise = () => {
+        hasPromise = () => {
             return "Promise" in window &&
                 // Some of these methods are missing from Firefox/Chrome experimental implementations
                 "cast" in window.Promise &&
@@ -25,8 +25,8 @@ else {
                 isWellImplemented();
         };
 
-    if (needPromise()) {
-        define(["src/promise/class"], (Promise) => Promise);
+    if (!hasPromise()) {
+        define(["promise/class"], (Promise) => Promise);
     }
     else {
         define([], () => window.Promise);
