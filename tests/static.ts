@@ -4,7 +4,7 @@
 /// <reference path="../typings/sinon/sinon.d.ts" />
 
 import abstract = require("src/promise/abstract");
-import Promise = require("promise");
+import Promise = require("src/promise/class");
 import tasks = require("src/promise/tasks");
 import FakePromise = require("./helpers/fake-promise");
 import commonHelpers = require("./helpers/common");

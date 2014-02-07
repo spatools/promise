@@ -8,11 +8,22 @@ requirejs.config({
     //baseUrl: "../",
 
     paths: {
-        "src/promise": "../src/promise",
         "promise": "../src/promise",
         "mocha": "../bower_components/mocha/mocha",
         "should": "../bower_components/should/should",
         "sinon": "../bower_components/sinon/sinon"
+    },
+
+    map: {
+        "*": {
+            "src/promise/abstract": "promise/abstract",
+            "src/promise/class": "promise/class",
+            "src/promise/extensions": "promise/extensions",
+            "src/promise/status": ".promise/status",
+            "src/promise/tasks": "promise/tasks",
+            "src/promise/timeout": "promise/timeout",
+            "src/promise/utils": "promise/utils"
+        }
     },
 
     shim: {

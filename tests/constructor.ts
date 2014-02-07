@@ -4,7 +4,7 @@
 /// <reference path="../typings/sinon/sinon.d.ts" />
 
 import abstract = require("src/promise/abstract");
-import Promise = require("promise");
+import Promise = require("src/promise/class");
 import commonHelpers = require("./helpers/common");
 
 describe("Promise Constructor", () => {
@@ -25,6 +25,7 @@ describe("Promise Constructor", () => {
     });
 
     it("should call InitializePromise Abstract Operations with itself and executor method", () => {
+        console.log(Promise);
         var executor = commonHelpers.noop(),
             promise = new Promise(executor);
 

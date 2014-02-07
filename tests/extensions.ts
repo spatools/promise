@@ -3,7 +3,7 @@
 /// <reference path="../typings/should/should.d.ts" />
 /// <reference path="../typings/sinon/sinon.d.ts" />
 
-import Promise = require("promise");
+import Promise = require("src/promise/class");
 import extensions = require("src/promise/extensions");
 import capabilitiesHelpers = require("./helpers/capabilities");
 
@@ -101,8 +101,8 @@ describe("Promise Extensions", () => {
                         result._status.should.equal("unresolved");
 
                         done();
-                    }, 15);
-                }, 15);
+                    }, 30);
+                }, 30);
             }, 30);
         });
 
@@ -148,10 +148,10 @@ describe("Promise Extensions", () => {
                         setTimeout(() => {
                             result._status.should.equal("has-resolution");
                             done();
-                        }, 15);
-                    }, 15);
-                }, 15);
-            }, 15);
+                        }, 30);
+                    }, 30);
+                }, 30);
+            }, 30);
         });
 
     });
