@@ -190,5 +190,7 @@ class Promise {
     }
 }
 
-window.Promise = Promise;
+var g = global || window;
+g.Promise = Promise;
+
 export = Promise;

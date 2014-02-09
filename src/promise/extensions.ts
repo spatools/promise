@@ -1,6 +1,5 @@
+/// <amd-dependency path="../promise" />
 /// <reference path="../promise.d.ts" />
-
-import P = require("promise");
 
 function partial(fn: Function, ...args: any[]) {
     return (..._args: any[]) => {

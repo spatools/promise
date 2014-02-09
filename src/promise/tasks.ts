@@ -4,15 +4,6 @@ import timeout = require("./timeout");
 var queue: PromiseTask[] = [],
     isStarted = false;
 
-function start(): void {
-    if (isStarted) {
-        return;
-    }
-
-    isStarted = true;
-    execute(); // Start execution flow
-}
-
 function execute(): void {
     timeout(() => {
         if (queue.length === 0) {
@@ -28,6 +19,15 @@ function execute(): void {
 
         execute(); // recurse while queue.lenght > 0
     });
+}
+
+function start(): void {
+    if (isStarted) {
+        return;
+    }
+
+    isStarted = true;
+    execute(); // Start execution flow
 }
 
 export function enqueue(executor: Function, args: any[]): void {
