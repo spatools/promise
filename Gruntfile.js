@@ -14,6 +14,7 @@ module.exports = function (grunt) {
         paths: {
             src: 'src',
             build: 'dist',
+            lib: 'lib',
             temp: '.temp',
             test: 'tests'
         },
@@ -44,6 +45,15 @@ module.exports = function (grunt) {
                 options: {
                     base_path: '<%= paths.src %>'
                 }
+            },
+            node: {
+                src: "<%= paths.src %>/**/*.ts",
+                dest: "<%= paths.lib %>/",
+                options: {
+                    target: "es5",
+                    module: "commonjs",
+                    base_path: '<%= paths.src %>'
+                }
             }
         },
 
@@ -72,6 +82,7 @@ module.exports = function (grunt) {
 
             base: ["*.js"],
             dev: ["<%= paths.src %>/**/*.js"],
+            node: ["<%= paths.lib %>/**/*.js"],
             dist: ["<%= paths.build %>/**/*.js", "!<%= paths.build %>/**/*.min.js"],
             test: {
                 options: {
@@ -157,10 +168,10 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask("build", ["tslint:dev", "typescript:dist", "jshint:dist", "requirejs"]);
+    grunt.registerTask("build", ["tslint:dev", "typescript:dist", "jshint:dist", "requirejs", "typescript:node", "jshint:node"]);
     grunt.registerTask("dev", ["tslint:dev", "typescript:dev", "jshint:dev"]);
     grunt.registerTask("test", ["dev", "tslint:test", "typescript:test", "jshint:test", "mocha:test"]);
     grunt.registerTask("nuget", ["nugetpack", "nugetpush"]);
 
-    grunt.registerTask("default", ["clean", "test"]);
+    grunt.registerTask("default", ["clean", "build", "test"]);
 };
