@@ -190,7 +190,7 @@ class Promise {
     }
 }
 
-var g = global || window;
+var g = typeof global !== "undefined" ? global : window;
 g.Promise = Promise;
 
 export = Promise;
