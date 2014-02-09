@@ -17,6 +17,7 @@ module.exports = function (grunt) {
             temp: '.temp',
             test: 'tests'
         },
+        pkg: grunt.file.readJSON("package.json"),
 
         typescript: {
             options: {
@@ -108,6 +109,7 @@ module.exports = function (grunt) {
         },
 
         clean: {
+            nuget: "nuget/*.nupkg",
             dev: [
                 "<%= paths.src %>/**/*.d.ts",
                 "<%= paths.src %>/**/*.js",
@@ -118,6 +120,22 @@ module.exports = function (grunt) {
                 "<%= paths.test %>/**/*.js",
                 "<%= paths.test %>/**/*.js.map"
             ],
+        },
+
+        nugetpack: {
+            all: {
+                src: "nuget/*.nuspec",
+                dest: "nuget/",
+
+                options: {
+                    version: "<%= pkg.version %>"
+                }
+            }
+        },
+        nugetpush: {
+            all: {
+                src: "nuget/*.<%= pkg.version %>.nupkg"
+            }
         },
 
         watch: {
@@ -142,6 +160,7 @@ module.exports = function (grunt) {
     grunt.registerTask("build", ["tslint:dev", "typescript:dist", "jshint:dist", "requirejs"]);
     grunt.registerTask("dev", ["tslint:dev", "typescript:dev", "jshint:dev"]);
     grunt.registerTask("test", ["dev", "tslint:test", "typescript:test", "jshint:test", "mocha:test"]);
+    grunt.registerTask("nuget", ["nugetpack", "nugetpush"]);
 
     grunt.registerTask("default", ["clean", "test"]);
 };
