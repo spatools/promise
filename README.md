@@ -57,6 +57,29 @@ define(["promise"], function() {
 });
 ```
 
+### Almond
+
+If you want to build using RequireJS r.js and almond along with your project, you have to add some configuration.
+
+```javascript
+{
+    paths: {
+        'promise': 'path/to/promise',
+        'promise-builder': 'path/to/promise-builder'
+    },
+    include: [
+        "path/to/promise-builder",
+        "path/to/promise/abstract",
+        "path/to/promise/class",
+        "path/to/promise/extensions", // not mandatory if your are referencing it in your app
+        "path/to/promise/status",
+        "path/to/promise/tasks",
+        "path/to/promise/timeout",
+        "path/to/promise/utils"
+    ]
+}
+```
+
 ### Node (installed using NPM)
 
 Call require to register Promise to global object
