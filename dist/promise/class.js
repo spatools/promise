@@ -123,7 +123,7 @@ define(["require", "exports", "./abstract", "./status", "./tasks", "./utils"], f
         return Promise;
     })();
 
-    var g = global || window;
+    var g = typeof global !== "undefined" ? global : window;
     g.Promise = Promise;
 
     
