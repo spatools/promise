@@ -33,6 +33,7 @@ tests/*.js.map
 tests/helpers/*.d.ts
 tests/helpers/*.js
 tests/helpers/*.js.map
+nuget/*.nupkg
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
