@@ -46,6 +46,24 @@ module.exports = function (grunt) {
             }
         },
 
+        requirejs: {
+            release: {
+                options: {
+                    baseUrl: "<%= paths.build %>",
+                    name: "../bower_components/almond/almond",
+                    out: "<%= paths.build %>/promise.min.js",
+                    optimize: "uglify2",
+                    wrap: true,
+                    include: [
+                        "../promise-builder",
+                        "promise/class",
+                        "promise/extensions"
+                    ],
+                    insertRequire: ['promise']
+                }
+            }
+        },
+
         jshint: {
             options: {
                 jshintrc: "jshint.json",
@@ -53,7 +71,7 @@ module.exports = function (grunt) {
 
             base: ["*.js"],
             dev: ["<%= paths.src %>/**/*.js"],
-            dist: ["<%= paths.build %>/**/*.js"],
+            dist: ["<%= paths.build %>/**/*.js", "!<%= paths.build %>/**/*.min.js"],
             test: {
                 options: {
                     '-W030': true,
@@ -121,7 +139,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask("build", ["tslint:dev", "typescript:dist", "jshint:dist"]);
+    grunt.registerTask("build", ["tslint:dev", "typescript:dist", "jshint:dist", "requirejs"]);
     grunt.registerTask("dev", ["tslint:dev", "typescript:dev", "jshint:dev"]);
     grunt.registerTask("test", ["dev", "tslint:test", "typescript:test", "jshint:test", "mocha:test"]);
 
