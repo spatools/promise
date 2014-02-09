@@ -80,13 +80,25 @@ If you want to build using RequireJS r.js and almond along with your project, yo
 Call require to register Promise to global object
 
 ```javascript
-require("promise");
+require("promise-ext");
+var extensions = requrie("promise-ext/lib/promise/extensions");
 
 var promise = new Promise(function(resolve, reject) {
 
 });
 ```
 
+## Contribute
+
+### Preparation
+
+Checkout repository and install dependencies
+
+```console
+$ git clone https://github.com/spatools/promise.git 
+$ npm install -g grunt-cli bower tsd
+$ npm install
+```
 
 ## Documentation
 
@@ -99,3 +111,19 @@ This library strictly follows EcmaScript 6 Specification which can be found on [
 
 * [Word](http://wiki.ecmascript.org/lib/exe/fetch.php?id=harmony%3Aspecification_drafts&cache=cache&media=harmony:working_draft_ecma-262_edition_6_01-20-14.doc)
 * [PDF](http://wiki.ecmascript.org/lib/exe/fetch.php?id=harmony%3Aspecification_drafts&cache=cache&media=harmony:working_draft_ecma-262_edition_6_01-20-14.pdf)
+
+### Build configurations
+
+#### Test
+
+Any changes should be tested. Any additions should have a new test associated with it.
+
+```console
+$ grunt test
+```
+
+#### Build
+
+```console
+$ grunt build
+```
