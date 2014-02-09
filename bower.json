@@ -1,11 +1,11 @@
 {
   "name": "promise-ext",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "authors": [
     "SPA Tools"
   ],
   "description": "An Ecmascript 6 Polyfill which is strictly following specification + Extensions",
-  "main": "promise.js",
+  "main": "dist/promise.js",
   "keywords": [
     "promise",
     "es6",
