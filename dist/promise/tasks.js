@@ -1,15 +1,6 @@
 define(["require", "exports", "./timeout"], function(require, exports, timeout) {
     var queue = [], isStarted = false;
 
-    function start() {
-        if (isStarted) {
-            return;
-        }
-
-        isStarted = true;
-        execute();
-    }
-
     function execute() {
         timeout(function () {
             if (queue.length === 0) {
@@ -23,6 +14,15 @@ define(["require", "exports", "./timeout"], function(require, exports, timeout) 
 
             execute();
         });
+    }
+
+    function start() {
+        if (isStarted) {
+            return;
+        }
+
+        isStarted = true;
+        execute();
     }
 
     function enqueue(executor, args) {

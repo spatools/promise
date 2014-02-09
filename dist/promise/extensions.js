@@ -1,4 +1,4 @@
-define(["require", "exports", "promise"], function(require, exports, P) {
+define(["require", "exports", "../promise"], function(require, exports) {
     function partial(fn) {
         var args = [];
         for (var _i = 0; _i < (arguments.length - 1); _i++) {

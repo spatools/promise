@@ -123,7 +123,9 @@ define(["require", "exports", "./abstract", "./status", "./tasks", "./utils"], f
         return Promise;
     })();
 
-    window.Promise = Promise;
+    var g = global || window;
+    g.Promise = Promise;
+
     
     return Promise;
 });
