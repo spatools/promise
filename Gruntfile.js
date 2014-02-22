@@ -123,11 +123,13 @@ module.exports = function (grunt) {
             nuget: "nuget/*.nupkg",
             dev: [
                 "<%= paths.src %>/**/*.d.ts",
+                "!<%= paths.src %>/promise.d.ts",
                 "<%= paths.src %>/**/*.js",
                 "<%= paths.src %>/**/*.js.map"
             ],
             test: [
-                "<%= paths.src %>/**/*.d.ts",
+                "<%= paths.test %>/**/*.d.ts",
+                "!<%= paths.test %>/tests.d.ts",
                 "<%= paths.test %>/**/*.js",
                 "<%= paths.test %>/**/*.js.map"
             ],
