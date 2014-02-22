@@ -2,15 +2,15 @@ if (typeof process !== "undefined" && {}.toString.call(process) === "[object pro
     global.Promise = require("./promise/class");
     exports = global.Promise;
 } else {
-    var isWellImplemented = function () {
+    var win = window, isWellImplemented = function () {
         var resolve;
-        new window.Promise(function (r) {
+        new win.Promise(function (r) {
             resolve = r;
         });
 
         return typeof resolve === "function";
     }, hasPromise = function () {
-        return "Promise" in window && "cast" in window.Promise && "resolve" in window.Promise && "reject" in window.Promise && "all" in window.Promise && "race" in window.Promise && isWellImplemented();
+        return "Promise" in win && "cast" in win.Promise && "resolve" in win.Promise && "reject" in win.Promise && "all" in win.Promise && "race" in win.Promise && isWellImplemented();
     };
 
     if (!hasPromise()) {
@@ -19,7 +19,7 @@ if (typeof process !== "undefined" && {}.toString.call(process) === "[object pro
         });
     } else {
         define([], function () {
-            return window.Promise;
+            return win.Promise;
         });
     }
 }
