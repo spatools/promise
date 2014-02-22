@@ -10,7 +10,7 @@ import utils = require("./utils");
  * @param {any} value Value to test thenability
  * @returns {boolean} True if a thenable object was found
  */
-export function initializePromise(promise: Promise, executor: PromiseExecutor): Promise {
+export function initializePromise<T>(promise: Promise<T>, executor: PromiseExecutor<T>): Promise<T> {
     promise._status = status.unresolved;
     promise._resolveReactions = [];
     promise._rejectReactions = [];
@@ -33,7 +33,7 @@ export function initializePromise(promise: Promise, executor: PromiseExecutor): 
  * @param {Promise} promise Promise to create rejection function for
  * @returns {PromiseRejectFunction} A function which reject promise using reason argument
  */
-export function createRejectFunction(promise: Promise): PromiseRejectFunction {
+export function createRejectFunction(promise: Promise<any>): PromiseRejectFunction {
     return (reason: any) => {
         if (promise._status !== status.unresolved) {
             return;
@@ -55,7 +55,7 @@ export function createRejectFunction(promise: Promise): PromiseRejectFunction {
  * @param {Promise} promise Promise to create resolution function for
  * @returns {PromiseResolveFunction} A function which resolve promise using resolution argument
  */
-export function createResolveFunction(promise: Promise): PromiseResolveFunction {
+export function createResolveFunction<T>(promise: Promise<T>): PromiseResolveFunction<T> {
     return (resolution: any) => {
         if (promise._status !== status.unresolved) {
             return;
@@ -79,14 +79,14 @@ export function createResolveFunction(promise: Promise): PromiseResolveFunction 
  * @param {PromiseCallback} onRejected Callback to be called whenever promise fails
  * @returns {PromiseResolveFunction} A function which resolve promise using resolution argument
  */
-export function createResolutionHandlerFunction(promise: Promise, onFulfilled: PromiseCallback, onRejected: PromiseCallback): PromiseResolveFunction {
+export function createResolutionHandlerFunction<T>(promise: Promise<T>, onFulfilled: (resolution: T) => any, onRejected: PromiseErrorCallback): PromiseResolveFunction<T> {
     return (resolution: any) => {
         if (resolution === promise) {
             var err = new TypeError("Handler result cannot be same promise as input");
             return onRejected.call(undefined, err);
         }
 
-        var ctor = promise.constructor,
+        var ctor = (<any>promise).constructor,
             capability = newPromiseCapability(ctor);
 
         if (updatePromiseFromPotentialThenable(resolution, capability)) {
@@ -102,13 +102,13 @@ export function createResolutionHandlerFunction(promise: Promise, onFulfilled: P
  * @param {Function} ctor Constructor which accepts Promise-like initialization
  * @returns {PromiseCapability}
  */
-export function newPromiseCapability(Ctor: any): PromiseCapability {
+export function newPromiseCapability<T>(Ctor: any): PromiseCapability<T> {
     if (!utils.isConstructor(Ctor)) {
         throw new TypeError("newPromiseCapability only accept a constructor as argument");
     }
 
-    var capability: PromiseCapability = { promise: undefined, resolve: undefined, reject: undefined };
-    capability.promise = new Ctor((resolve: PromiseResolveFunction, reject: PromiseRejectFunction) => {
+    var capability: PromiseCapability<T> = { promise: undefined, resolve: undefined, reject: undefined };
+    capability.promise = new Ctor((resolve: PromiseResolveFunction<T>, reject: PromiseRejectFunction) => {
         capability.resolve = resolve;
         capability.reject = reject;
     });
@@ -154,7 +154,7 @@ export function triggerPromiseReaction(reactions: PromiseReaction[], value: any)
  * @param {PromiseCapability} capability Capability to resolve if value is a thenable
  * @returns {boolean} True if value is a thenable
  */
-export function updatePromiseFromPotentialThenable(value: any, capability: PromiseCapability): boolean {
+export function updatePromiseFromPotentialThenable<T>(value: any, capability: PromiseCapability<T>): boolean {
     try {
         if (utils.isObject(value) && utils.isCallable(value.then)) {
             value.then.call(value, capability.resolve, capability.reject);

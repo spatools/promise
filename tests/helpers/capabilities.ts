@@ -4,11 +4,11 @@
 import Promise = require("promise");
 import abstract = require("src/promise/abstract");
 
-export function createFakeCapability(): PromiseCapability {
+export function createFakeCapability(): PromiseCapability<any> {
     return abstract.newPromiseCapability(Promise);
 }
 
-export function createFakeCapabilities(count: number): PromiseCapability[] {
+export function createFakeCapabilities(count: number): PromiseCapability<any>[] {
     var result = [],
         i = 0;
 
@@ -19,7 +19,7 @@ export function createFakeCapabilities(count: number): PromiseCapability[] {
     return result;
 }
 
-export function extractPromisesFromCapabilities(capabilities: PromiseCapability[]): Promise[] {
+export function extractPromisesFromCapabilities(capabilities: PromiseCapability<any>[]): Promise<any>[] {
     var result = [],
         len = capabilities.length,
         i = 0;

@@ -1,55 +1,30 @@
-﻿interface PromiseConstructor {
-    new (executor: PromiseExecutor): Promise;
-    prototype: PromisePrototype;
-
-    all(promises: Promise[]): Promise;
-    race(promises: Promise[]): Promise;
-
-    cast(value: any): Promise;
-
-    resolve(value: any): Promise;
-
-    reject(reason: Error): Promise;
-    reject(reason: any): Promise;
-}
-
-interface PromisePrototype {
-    constructor?: PromiseConstructor;
-
-    then(onFulfilled: PromiseCallback): Promise;
-    then(onFulfilled: PromiseCallback, onRejected: PromiseCallback): Promise;
-
-    catch(onRejected: PromiseCallback): Promise;
-}
-
-interface Promise extends PromisePrototype {
-    _status: string;
-    _result: any;
-    _rejectReactions: PromiseReaction[];
-    _resolveReactions: PromiseReaction[];
-}
-
-interface Thenable {
-    then(onFulfilled: PromiseCallback): any;
-    then(onFulfilled: PromiseCallback, onRejected: PromiseCallback): any;
-}
-
-interface PromiseCapability {
-    promise: Promise;
-    resolve: Function;
-    reject: Function;
-}
-
-interface PromiseReaction {
-    capability: PromiseCapability;
-    handler: Function;
+﻿
+interface PromiseExecutor<T> {
+    (resolve: PromiseResolveFunction<T>, reject: PromiseRejectFunction): void;
 }
 
 interface PromiseRejectFunction {
+    (reason: Error): void;
     (reason: any): void;
 }
-interface PromiseResolveFunction {
-    (value: any): void;
+interface PromiseResolveFunction<T> {
+    (value: T): void;
+}
+
+interface PromiseErrorCallback {
+    (reason: Error): any;
+    (reason: any): any;
+}
+
+interface PromiseCapability<T> {
+    promise: Promise<T>;
+    resolve: PromiseResolveFunction<T>;
+    reject: PromiseRejectFunction;
+}
+
+interface PromiseReaction {
+    capability: PromiseCapability<any>;
+    handler: Function;
 }
 
 interface PromiseTask {
@@ -57,23 +32,53 @@ interface PromiseTask {
     args: any[];
 }
 
-interface PromiseExecutor {
-    (resolve: PromiseCallback, reject: PromiseCallback): void;
+interface Thenable<T> {
+    then(onFulfilled: (value: T) => Thenable<T>): Thenable<T>;
+    then(onFulfilled: (value: T) => T): Thenable<T>;
+    then(onFulfilled: (value: T) => Thenable<T>, onRejected: PromiseErrorCallback): Thenable<T>;
+    then(onFulfilled: (value: T) => T, onRejected: PromiseErrorCallback): Thenable<T>;
+
+    then<U>(onFulfilled: (value: T) => Thenable<U>): Thenable<U>;
+    then<U>(onFulfilled: (value: T) => U): Thenable<U>;
+    then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected: PromiseErrorCallback): Thenable<U>;
+    then<U>(onFulfilled: (value: T) => U, onRejected: PromiseErrorCallback): Thenable<U>;
 }
 
-interface PromiseCallback {
-    (value: any): void;
-}
+declare class Promise<T> implements Thenable<T> {
+    _status: string;
+    _result: any;
+    _rejectReactions: PromiseReaction[];
+    _resolveReactions: PromiseReaction[];
 
-interface Window {
-    Promise: PromiseConstructor;
+    constructor(executor: PromiseExecutor<T>);
+
+    then(onFulfilled: (value: T) => Thenable<T>): Promise<T>;
+    then(onFulfilled: (value: T) => T): Promise<T>;
+    then(onFulfilled: (value: T) => Thenable<T>, onRejected: PromiseErrorCallback): Thenable<T>;
+    then(onFulfilled: (value: T) => T, onRejected: PromiseErrorCallback): Promise<T>;
+
+    then<U>(onFulfilled: (value: T) => Thenable<U>): Promise<U>;
+    then<U>(onFulfilled: (value: T) => U): Promise<U>;
+    then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected: PromiseErrorCallback): Promise<U>;
+    then<U>(onFulfilled: (value: T) => U, onRejected: PromiseErrorCallback): Promise<U>;
+
+    catch(onRejected: PromiseErrorCallback): Promise<T>;
+
+    static all<T>(promises: Promise<T>[]): Promise<T>;
+    static race<T>(promises: Promise<T>[]): Promise<T>;
+
+    static cast<T>(value: any): Promise<T>;
+
+    static resolve<T>(value: T): Promise<T>;
+    static resolve<T>(value: any): Promise<T>;
+
+    static reject(reason: Error): Promise<any>;
+    static reject(reason: any): Promise<any>;
 }
 
 declare module "promise" {
     export = Promise;
 }
-
-declare var Promise: PromiseConstructor;
 
 declare var process: any;
 declare var require: any;

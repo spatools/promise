@@ -45,7 +45,7 @@ describe("Promise Static", () => {
             for (var i = 0; i < capabilities.length; i++) {
                 promise._status.should.equal("unresolved");
 
-                capabilities[i].resolve();
+                capabilities[i].resolve(undefined);
             }
 
             setTimeout(() => {
@@ -154,7 +154,7 @@ describe("Promise Static", () => {
 
                 promise = Promise.race(promises);
 
-            capabilities[0].resolve();
+            capabilities[0].resolve(undefined);
 
             setTimeout(() => {
                 promise._status.should.equal("has-resolution");

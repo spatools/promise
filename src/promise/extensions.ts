@@ -7,13 +7,13 @@ function partial(fn: Function, ...args: any[]) {
     };
 }
 
-export function timeout(ms: number): Promise {
-    return new Promise(resolve => {
+export function timeout(ms: number): Promise<void> {
+    return new Promise<void>(resolve => {
         setTimeout(() => { resolve.call(undefined); }, ms);
     });
 }
 
-export function forEach(values: any[], executor: (value: any, index: number) => Promise): Promise {
+export function forEach<T>(values: T[], executor: (value: T, index: number) => Promise<T>): Promise<T> {
     return new Promise((resolve, reject) => {
         if (values.length === 0) {
             return resolve.call(undefined);

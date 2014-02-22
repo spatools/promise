@@ -4,14 +4,14 @@ import status = require("./status");
 import tasks = require("./tasks");
 import utils = require("./utils");
 
-class Promise {
+class Promise<T> {
     public _status: string = status.waiting;
     public _result: any;
 
     public _rejectReactions: PromiseReaction[];
     public _resolveReactions: PromiseReaction[];
 
-    constructor(executor: PromiseExecutor) {
+    constructor(executor: PromiseExecutor<T>) {
         if (!utils.isCallable(executor)) {
             throw new TypeError("You must pass a resolver function as the first argument to the promise constructor");
         }
@@ -29,9 +29,9 @@ class Promise {
      * @param {PromiseCallback} [onRejected] Callback to be called when Promise fails
      * @returns {Promise} Chained Promise
      */
-    public then(onFulfilled: PromiseCallback): Promise;
-    public then(onFulfilled: PromiseCallback, onRejected: PromiseCallback): Promise;
-    public then(onFulfilled: PromiseCallback, onRejected?: PromiseCallback): Promise {
+    public then(onFulfilled: (resolution) => any): Promise<T>;
+    public then(onFulfilled: (resolution) => any, onRejected: PromiseErrorCallback): Promise<T>;
+    public then(onFulfilled: (resolution) => any, onRejected?: PromiseErrorCallback): Promise<T> {
         var self = this,
             ctor = (<any>this).constructor,
             capability = abstract.newPromiseCapability(ctor);
@@ -67,7 +67,7 @@ class Promise {
      * @param {PromiseCallback} onRejected callback to be called whenever promise fail
      * @returns {Promise} A chained Promise which handle error and fullfil
      */
-    public catch(onRejected): Promise {
+    public catch(onRejected): Promise<T> {
         return this.then(undefined, onRejected);
     }
 
@@ -76,7 +76,7 @@ class Promise {
      * @param {any} value Value to resolve promise with
      * @returns {Promise} Resolved Promise
      */
-    static resolve(value: any): Promise {
+    static resolve<T>(value: T): Promise<T> {
         var ctor = this,
             capability = abstract.newPromiseCapability(ctor);
 
@@ -89,7 +89,7 @@ class Promise {
      * @param {any} reason Reason to reject promise
      * @returns {Promise} Rejected Promise
      */
-    static reject(reason: any): Promise {
+    static reject<T>(reason: any): Promise<T> {
         var ctor = this,
             capability = abstract.newPromiseCapability(ctor);
 
@@ -102,7 +102,7 @@ class Promise {
      * @param {any} value Value to test if promise or not and to convert if not
      * @returns {Promise} Input value if it's a Promise else a new resolved Promise
      */
-    static cast(value: any): Promise {
+    static cast<T>(value: any): Promise<T> {
         var ctor = this;
         if (abstract.isPromise(value) && value.constructor === ctor) {
             return value;
@@ -119,7 +119,7 @@ class Promise {
      * @param {Array} promises Promises to check completion
      * @returns {Promise} A Promise which resolve when all of given promises fulfill and reject whenever one fail
      */
-    static all(promises: any[]): Promise {
+    static all<T>(promises: any[]): Promise<T> {
         var ctor = this,
             capability = abstract.newPromiseCapability(ctor),
             values = [],
@@ -167,7 +167,7 @@ class Promise {
      * @param {Array} promises Promises to perform race with
      * @returns {Promise} A Promise which resolve whenever one of given promises fulfill and reject whenever one fail
      */
-    static race(promises: any[]): Promise {
+    static race<T>(promises: any[]): Promise<T> {
         var ctor = this,
             capability = abstract.newPromiseCapability(ctor),
             i = 0, len = promises.length,

@@ -70,7 +70,7 @@ describe("Promise Extensions", () => {
                 i = 0, len = 3,
                 p, c, execSpy;
 
-            function execute(val: number, index: number): Promise {
+            function execute(val: number, index: number): Promise<number> {
                 return promises[index];
             }
 
@@ -82,7 +82,7 @@ describe("Promise Extensions", () => {
                 sinon.assert.calledWith(execSpy, values[0]);
 
                 promises[0]._status.should.equal("unresolved");
-                capabilities[0].resolve();
+                capabilities[0].resolve(undefined);
                 promises[0]._status.should.equal("has-resolution");
 
                 setTimeout(() => {
@@ -90,7 +90,7 @@ describe("Promise Extensions", () => {
                     sinon.assert.calledWith(execSpy, values[1]);
 
                     promises[1]._status.should.equal("unresolved");
-                    capabilities[1].resolve();
+                    capabilities[1].resolve(undefined);
                     promises[1]._status.should.equal("has-resolution");
 
                     setTimeout(() => {
@@ -114,7 +114,7 @@ describe("Promise Extensions", () => {
                 i = 0, len = 3,
                 p, c, execSpy;
 
-            function execute(val: number, index: number): Promise {
+            function execute(val: number, index: number): Promise<number> {
                 return promises[index];
             }
 
@@ -126,7 +126,7 @@ describe("Promise Extensions", () => {
                 sinon.assert.calledWith(execSpy, values[0]);
 
                 promises[0]._status.should.equal("unresolved");
-                capabilities[0].resolve();
+                capabilities[0].resolve(undefined);
                 promises[0]._status.should.equal("has-resolution");
 
                 setTimeout(() => {
@@ -134,7 +134,7 @@ describe("Promise Extensions", () => {
                     sinon.assert.calledWith(execSpy, values[1]);
 
                     promises[1]._status.should.equal("unresolved");
-                    capabilities[1].resolve();
+                    capabilities[1].resolve(undefined);
                     promises[1]._status.should.equal("has-resolution");
 
                     setTimeout(() => {
@@ -142,7 +142,7 @@ describe("Promise Extensions", () => {
                         sinon.assert.calledWith(execSpy, values[2]);
 
                         promises[2]._status.should.equal("unresolved");
-                        capabilities[2].resolve();
+                        capabilities[2].resolve(undefined);
                         promises[2]._status.should.equal("has-resolution");
 
                         setTimeout(() => {
