@@ -7,7 +7,7 @@ function partial(fn: Function, ...args: any[]) {
     };
 }
 
-export function timeout(ms: number): Promise<void> {
+export function timeout(ms: number = 1): Promise<void> {
     return new Promise<void>(resolve => {
         setTimeout(() => { resolve.call(undefined); }, ms);
     });
