@@ -80,6 +80,11 @@ declare module "promise" {
     export = Promise;
 }
 
+declare module "promise/extensions" {
+    export function timeout(ms?: number): Promise<void>;
+    export function forEach<T>(values: T[], executor: (value: T, index: number) => Promise<T>): Promise<T>;
+}
+
 declare var process: any;
 declare var require: any;
 declare var global: any;
