@@ -14,6 +14,7 @@ define(["require", "exports", "../promise"], function(require, exports) {
     }
 
     function timeout(ms) {
+        if (typeof ms === "undefined") { ms = 1; }
         return new Promise(function (resolve) {
             setTimeout(function () {
                 resolve.call(undefined);
