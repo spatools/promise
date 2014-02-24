@@ -29,9 +29,9 @@ class Promise<T> {
      * @param {PromiseCallback} [onRejected] Callback to be called when Promise fails
      * @returns {Promise} Chained Promise
      */
-    public then(onFulfilled: (resolution) => any): Promise<T>;
-    public then(onFulfilled: (resolution) => any, onRejected: PromiseErrorCallback): Promise<T>;
-    public then(onFulfilled: (resolution) => any, onRejected?: PromiseErrorCallback): Promise<T> {
+    public then<U>(onFulfilled: (resolution: T) => any): Promise<U>;
+    public then<U>(onFulfilled: (resolution: T) => any, onRejected: PromiseErrorCallback): Promise<U>;
+    public then<U>(onFulfilled: (resolution: T) => any, onRejected?: PromiseErrorCallback): Promise<U> {
         var self = this,
             ctor = (<any>this).constructor,
             capability = abstract.newPromiseCapability(ctor);

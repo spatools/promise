@@ -33,11 +33,6 @@ interface PromiseTask {
 }
 
 interface Thenable<T> {
-    then(onFulfilled: (value: T) => Thenable<T>): Thenable<T>;
-    then(onFulfilled: (value: T) => T): Thenable<T>;
-    then(onFulfilled: (value: T) => Thenable<T>, onRejected: PromiseErrorCallback): Thenable<T>;
-    then(onFulfilled: (value: T) => T, onRejected: PromiseErrorCallback): Thenable<T>;
-
     then<U>(onFulfilled: (value: T) => Thenable<U>): Thenable<U>;
     then<U>(onFulfilled: (value: T) => U): Thenable<U>;
     then<U>(onFulfilled: (value: T) => Thenable<U>, onRejected: PromiseErrorCallback): Thenable<U>;
@@ -51,11 +46,6 @@ declare class Promise<T> implements Thenable<T> {
     _resolveReactions: PromiseReaction[];
 
     constructor(executor: PromiseExecutor<T>);
-
-    then(onFulfilled: (value: T) => Thenable<T>): Promise<T>;
-    then(onFulfilled: (value: T) => T): Promise<T>;
-    then(onFulfilled: (value: T) => Thenable<T>, onRejected: PromiseErrorCallback): Thenable<T>;
-    then(onFulfilled: (value: T) => T, onRejected: PromiseErrorCallback): Promise<T>;
 
     then<U>(onFulfilled: (value: T) => Thenable<U>): Promise<U>;
     then<U>(onFulfilled: (value: T) => U): Promise<U>;
@@ -82,11 +72,17 @@ declare module "promise" {
 
 declare module "promise/extensions" {
     export function timeout(ms?: number): Promise<void>;
+
     export function module(name: string): Promise<any>;
     export function module(names: string[]): Promise<any[]>;
     export function module(...names: string[]): Promise<any[]>;
+
     export function forEach<T>(values: T[], executor: (value: T, index: number) => Promise<T>): Promise<T>;
+    export function forEach<T>(values: T[], executor: (value: T, index: number) => T): Promise<T>;
+    export function forEach<T>(values: T[], executor: (value: T, index: number) => void): Promise<void>;
+
     export function map<T, U>(values: T[], executor: (value: T, index: number) => Promise<U>): Promise<U[]>;
+    export function map<T, U>(values: T[], executor: (value: T, index: number) => U): Promise<U[]>;
 }
 
 declare var process: any;
