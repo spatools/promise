@@ -1,6 +1,6 @@
 {
   "name": "promise-ext",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "An Ecmascript 6 Polyfill which is strictly following specification + Extensions",
   "main": "lib/promise.js",
   "directories": {
