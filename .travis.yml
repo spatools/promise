@@ -6,4 +6,4 @@ before_install:
 install:
   - npm install
   - bower install
-  - typings install
+  - tsd reinstall
