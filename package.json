@@ -7,7 +7,6 @@
     "test": "tests"
   },
   "scripts": {
-	"install": "bower install && tsd reinstall",
     "test": "grunt test"
   },
   "repository": {
