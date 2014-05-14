@@ -1,3 +1,4 @@
+/// <reference path="../../_definitions.d.ts" />
 /// <reference path="../promise.d.ts" />
 
 function _nextTick(callback: () => void): void {
