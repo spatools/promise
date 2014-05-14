@@ -1,4 +1,5 @@
 /// <reference path="promise.d.ts" />
+/// <reference path="../_definitions.d.ts" />
 
 // NodeJS : no need to check as node does not support es6 yet
 if (typeof process !== "undefined" && {}.toString.call(process) === "[object process]") {
