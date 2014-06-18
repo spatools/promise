@@ -64,7 +64,7 @@ export function invoke(obj: any, fn: string, args: any[] = []): any {
  * @returns {any} Given value
  */
 export function identity(value: any): any {
-    return identity;
+    return value;
 }
 
 /**
