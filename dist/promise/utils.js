@@ -35,7 +35,7 @@ define(["require", "exports"], function(require, exports) {
     exports.invoke = invoke;
 
     function identity(value) {
-        return exports.identity;
+        return value;
     }
     exports.identity = identity;
 
