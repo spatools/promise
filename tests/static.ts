@@ -72,65 +72,6 @@ describe("Promise Static", () => {
 
     });
 
-    describe("cast", () => {
-
-        it("should return given argument if it's a Promise", () => {
-            var promise = new Promise(commonHelpers.noop()),
-                result = Promise.cast(promise);
-
-            result.should.equal(promise);
-        });
-
-        it("should return a resolved Promised if it's an object", () => {
-            var promise = Promise.cast({});
-
-            promise._status.should.equal("has-resolution");
-        });
-
-        it("should return a resolved Promised with argument as result if it's an object", (done) => {
-            var onFulfilledSpy = sinon.spy(),
-                expectedResolution = { value: "Yoopie!" },
-                promise = Promise.cast(expectedResolution);
-
-            promise.then(onFulfilledSpy);
-
-            promise._status.should.equal("has-resolution");
-
-            setTimeout(() => {
-                sinon.assert.calledOnce(onFulfilledSpy);
-                sinon.assert.calledWith(onFulfilledSpy, expectedResolution);
-
-                done();
-            }, 5);
-        });
-
-        it("should return a resolved Promised and wait for resolution before calling callbacks if argument is a thenable", (done) => {
-            var onFulfilledSpy = sinon.spy(),
-                resolveHandler,
-                expectedResolution = { value: "Yoopie!" },
-                fake = new FakePromise(resolve => { resolveHandler = resolve; }),
-                promise = Promise.cast(fake);
-
-            promise.then(onFulfilledSpy);
-
-            promise._status.should.equal("has-resolution");
-
-            setTimeout(() => {
-                sinon.assert.notCalled(onFulfilledSpy);
-
-                resolveHandler(expectedResolution);
-
-                setTimeout(() => {
-                    sinon.assert.calledOnce(onFulfilledSpy);
-                    sinon.assert.calledWith(onFulfilledSpy, expectedResolution);
-
-                    done();
-                }, 5);
-            }, 5);
-        });
-
-    });
-
     describe("race", () => {
 
         it("should return a Promise object", () => {
