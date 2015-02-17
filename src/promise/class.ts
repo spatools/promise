@@ -98,23 +98,6 @@ class Promise<T> {
     }
 
     /**
-     * The cast function check if value is a Promise return it or convert value to a resolved promise
-     * @param {any} value Value to test if promise or not and to convert if not
-     * @returns {Promise} Input value if it's a Promise else a new resolved Promise
-     */
-    static cast<T>(value: any): Promise<T> {
-        var ctor = this;
-        if (abstract.isPromise(value) && value.constructor === ctor) {
-            return value;
-        }
-
-        var capability = abstract.newPromiseCapability(ctor);
-        capability.resolve.call(undefined, value);
-
-        return capability.promise;
-    }
-
-    /**
      * A Promise.all resolve element function is an anonymous built-in function that is used to resolve a specific Promise.all element.
      * @param {Array} promises Promises to check completion
      * @returns {Promise} A Promise which resolve when all of given promises fulfill and reject whenever one fail
