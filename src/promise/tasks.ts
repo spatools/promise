@@ -87,7 +87,7 @@ var scheduleFlush = (function () {
             var messagePrefix = "setImmediate$" + Math.random() + "$",
 
                 onGlobalMessage = function (event) {
-                    if (event.source === global &&
+                    if (event.source === win &&
                         typeof event.data === "string" &&
                         event.data.indexOf(messagePrefix) === 0) {
                         flush();
