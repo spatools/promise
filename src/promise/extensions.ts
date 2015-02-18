@@ -1,5 +1,6 @@
 /// <amd-dependency path="../promise" />
 /// <reference path="../promise.d.ts" />
+/// <reference path="../../_definitions.d.ts" />
 
 function partial(fn: Function, ...args: any[]) {
     return (..._args: any[]) => {
