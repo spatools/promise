@@ -5,30 +5,6 @@ import tasks = require("./tasks");
 import utils = require("./utils");
 
 /**
- * Try to handle a thenable object if possible
- * @param {Promise} promise Promise related with this test
- * @param {any} value Value to test thenability
- * @returns {boolean} True if a thenable object was found
- */
-export function initializePromise<T>(promise: Promise<T>, executor: PromiseExecutor<T>): Promise<T> {
-    promise._status = status.unresolved;
-    promise._resolveReactions = [];
-    promise._rejectReactions = [];
-
-    var resolve = createResolveFunction(promise),
-        reject = createRejectFunction(promise);
-
-    try {
-        executor(resolve, reject);
-    }
-    catch (e) {
-        reject.call(undefined, e);
-    }
-
-    return promise;
-}
-
-/**
  * Create Promise rejection function
  * @param {Promise} promise Promise to create rejection function for
  * @returns {PromiseRejectFunction} A function which reject promise using reason argument

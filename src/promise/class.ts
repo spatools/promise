@@ -20,7 +20,19 @@ class Promise<T> {
             throw new TypeError("Failed to construct 'Promise': Please use the 'new' operator, this object constructor cannot be called as a function.");
         }
 
-        abstract.initializePromise(this, executor);
+        this._status = status.unresolved;
+        this._resolveReactions = [];
+        this._rejectReactions = [];
+
+        var resolve = abstract.createResolveFunction(this),
+            reject = abstract.createRejectFunction(this);
+
+        try {
+            executor(resolve, reject);
+        }
+        catch (e) {
+            reject.call(undefined, e);
+        }
     }
 
     /**
@@ -131,7 +143,7 @@ class Promise<T> {
             promise = promises[i];
 
             try {
-                promise = utils.invoke(ctor, "cast", [promise]);
+                promise = utils.invoke(ctor, "resolve", [promise]);
                 utils.invoke(promise, "then", [createResolveElement(i), capability.reject]);
             }
             catch (e) {
@@ -160,7 +172,7 @@ class Promise<T> {
             promise = promises[i];
 
             try {
-                promise = utils.invoke(ctor, "cast", [promise]);
+                promise = utils.invoke(ctor, "resolve", [promise]);
                 utils.invoke(promise, "then", [capability.resolve, capability.reject]);
             }
             catch (e) {
