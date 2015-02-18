@@ -8,9 +8,17 @@ import Promise = require("src/promise/class");
 import commonHelpers = require("./helpers/common");
 
 describe("Promise Constructor", () => {
-    var initializePromiseStub: SinonStub;
-    beforeEach(() => { initializePromiseStub = sinon.stub(abstract, "initializePromise"); });
-    afterEach(() => { initializePromiseStub.restore(); });
+    var createResolveFunctionStub: SinonStub, createRejectFunctionStub: SinonStub;
+
+    beforeEach(() => {
+        createResolveFunctionStub = sinon.stub(abstract, "createResolveFunction");
+        createRejectFunctionStub = sinon.stub(abstract, "createRejectFunction");
+    });
+
+    afterEach(() => {
+        createResolveFunctionStub.restore();
+        createRejectFunctionStub.restore();
+    });
 
     it("should throws a TypeError if given argument is not a Function", () => {
         var P: any = Promise;
@@ -24,18 +32,48 @@ describe("Promise Constructor", () => {
          (() => { P(null); }).should.throw(TypeError);
     });
 
-    it("should call InitializePromise Abstract Operations with itself and executor method", () => {
-        var executor = commonHelpers.noop(),
-            promise = new Promise(executor);
-
-        sinon.assert.calledOnce(initializePromiseStub);
-        sinon.assert.calledWithExactly(initializePromiseStub, promise, executor);
-    });
-
-    it("should set [[Status]] internal slot to undefined", () => {
+    it("should set [[Status]] internal slot to 'unresolved'", () => {
         var promise = new Promise(commonHelpers.noop());
 
-        promise.should.have.property("_status", undefined);
+        promise._status.should.equal("unresolved");
+    });
+
+    it("should set [[ResolveReactions]] and [[RejectReactions]] internal slots to empty lists", () => {
+        var promise = new Promise(commonHelpers.noop());
+
+        promise._resolveReactions.should.eql([]);
+        promise._rejectReactions.should.eql([]);
+    });
+
+    it("should call CreateResolveFunction and CreateRejectFunction Abstract Operations", () => {
+        var promise = new Promise(commonHelpers.noop());
+
+        sinon.assert.calledOnce(createResolveFunctionStub);
+        sinon.assert.calledOnce(createRejectFunctionStub);
+    });
+
+    it("should call given executor with result of CreateResolveFunction and CreateRejectFunction Abstract Operations", () => {
+        var executorSpy = sinon.spy(),
+            rejectSpy = sinon.spy(),
+            resolveSpy = sinon.spy();
+
+        createResolveFunctionStub.returns(resolveSpy);
+        createRejectFunctionStub.returns(rejectSpy);
+
+        new Promise(executorSpy);
+
+        sinon.assert.calledOnce(executorSpy);
+        sinon.assert.calledWithExactly(executorSpy, resolveSpy, rejectSpy);
+    });
+
+    it("should call reject function if executor throws", () => {
+        var rejectSpy = sinon.spy();
+
+        createRejectFunctionStub.returns(rejectSpy);
+
+        new Promise(() => { throw new Error("an error"); });
+
+        sinon.assert.calledOnce(rejectSpy);
     });
 
 });

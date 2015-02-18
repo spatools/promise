@@ -48,7 +48,7 @@ describe("Promise Task Queue", () => {
             }, 1);
         });
 
-        it("should call first function when thread is released but not second", (done) => {
+        it("should call all callbacks when thread is released", (done) => {
             var callback = sinon.spy(),
                 callback2 = sinon.spy();
 
@@ -60,32 +60,9 @@ describe("Promise Task Queue", () => {
 
             setTimeout(() => {
                 sinon.assert.calledOnce(callback);
-                sinon.assert.notCalled(callback2);
+                sinon.assert.calledOnce(callback2);
 
                 done();
-            }, 1);
-        });
-
-        it("should call first function when thread is released and second after next thread release", (done) => {
-            var callback = sinon.spy(),
-                callback2 = sinon.spy();
-
-            tasks.enqueue(callback, []);
-            tasks.enqueue(callback2, []);
-
-            sinon.assert.notCalled(callback);
-            sinon.assert.notCalled(callback2);
-
-            setTimeout(() => {
-                sinon.assert.calledOnce(callback);
-                sinon.assert.notCalled(callback2);
-
-                setTimeout(() => {
-                    sinon.assert.calledOnce(callback);
-                    sinon.assert.calledOnce(callback2);
-
-                    done();
-                }, 1);
             }, 1);
         });
 
