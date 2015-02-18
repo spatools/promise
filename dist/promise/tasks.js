@@ -1,42 +1,105 @@
-define(["require", "exports", "./timeout"], function(require, exports, timeout) {
-    var queue = [], isStarted = false;
-
-    function execute() {
-        timeout(function () {
-            if (queue.length === 0) {
-                isStarted = false;
-                return;
-            }
-
-            var task = queue.shift(), executor = task.executor, args = task.args;
-
-            executor.apply(undefined, args);
-
-            execute();
-        });
-    }
-
-    function start() {
-        if (isStarted) {
-            return;
+/// <reference path="../../_definitions.d.ts" />
+define(["require", "exports"], function (require, exports) {
+    //#region Tasks Queue
+    var len = 0, queue = new Array(1000), undef;
+    function flush() {
+        for (var i = 0; i < len; i += 2) {
+            var callback = queue[i], args = queue[i + 1];
+            callback.apply(null, args);
+            queue[i] = undef;
+            queue[i + 1] = undef;
         }
-
-        isStarted = true;
-        execute();
+        len = 0;
     }
-
-    function enqueue(executor, args) {
-        queue.push({
-            executor: executor,
-            args: args
-        });
-
-        start();
-    }
-    exports.enqueue = enqueue;
-
+    //#endregion
+    //#region Implementation Tests
+    var scheduleFlush = (function () {
+        // Node.JS
+        if (typeof process !== "undefined" && {}.toString.call(process) === "[object process]") {
+            if (global.setImmediate) {
+                return function () {
+                    global.setImmediate(flush);
+                };
+            }
+            else {
+                return function () {
+                    process.nextTick(flush);
+                };
+            }
+        }
+        else if (typeof Uint8ClampedArray !== "undefined" && typeof importScripts !== "undefined" && typeof MessageChannel !== "undefined") {
+            var channel = new MessageChannel();
+            channel.port1.onmessage = flush;
+            return function () {
+                channel.port2.postMessage(0);
+            };
+        }
+        else {
+            var win = (typeof window !== "undefined") ? window : {}, canUsePostMessage = function canUsePostMessage() {
+                // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+                // where `global.postMessage` means something completely different and can"t be used for this purpose.
+                if (win.postMessage && !win.importScripts) {
+                    var postMessageIsAsynchronous = true, oldOnMessage = win.onmessage;
+                    win.onmessage = function () {
+                        postMessageIsAsynchronous = false;
+                    };
+                    win.postMessage("", "*");
+                    win.onmessage = oldOnMessage;
+                    return postMessageIsAsynchronous;
+                }
+            };
+            // Mutation Observer
+            if (win.MutationObserver || win.WebKitMutationObserver) {
+                win.MutationObserver = win.MutationObserver || win.WebKitMutationObserver;
+                var iterations = 0, observer = new win.MutationObserver(flush), node = document.createTextNode("");
+                observer.observe(node, { characterData: true });
+                return function () {
+                    node.data = (iterations = ++iterations % 2);
+                };
+            }
+            else if (canUsePostMessage()) {
+                var messagePrefix = "setImmediate$" + Math.random() + "$", onGlobalMessage = function (event) {
+                    if (event.source === global && typeof event.data === "string" && event.data.indexOf(messagePrefix) === 0) {
+                        flush();
+                    }
+                };
+                if (win.addEventListener) {
+                    win.addEventListener("message", onGlobalMessage, false);
+                }
+                else {
+                    win.attachEvent("onmessage", onGlobalMessage);
+                }
+                return function () {
+                    win.postMessage(messagePrefix + Math.random() * 1000, "*");
+                };
+            }
+            else {
+                return function () {
+                    setTimeout(flush, 1);
+                };
+            }
+        }
+    }());
+    //#endregion
+    //#region Public Methods
     function clear() {
-        queue = [];
+        for (var i = 0; i < len; i++) {
+            queue[i] = undef;
+        }
+        len = 0;
     }
     exports.clear = clear;
+    function enqueue(callback, args) {
+        queue[len] = callback;
+        queue[len + 1] = args;
+        len += 2;
+        if (len === 2) {
+            // If len is 1, that means that we need to schedule an async flush.
+            // If additional callbacks are queued before the queue is flushed, they
+            // will be processed by this flush that we are scheduling.
+            scheduleFlush();
+        }
+    }
+    exports.enqueue = enqueue;
 });
+//#endregion
