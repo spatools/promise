@@ -59,7 +59,7 @@ define(["require", "exports"], function (require, exports) {
             }
             else if (canUsePostMessage()) {
                 var messagePrefix = "setImmediate$" + Math.random() + "$", onGlobalMessage = function (event) {
-                    if (event.source === global && typeof event.data === "string" && event.data.indexOf(messagePrefix) === 0) {
+                    if (event.source === win && typeof event.data === "string" && event.data.indexOf(messagePrefix) === 0) {
                         flush();
                     }
                 };
