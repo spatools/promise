@@ -97,7 +97,7 @@ module.exports = function (grunt) {
             options: {
                 configuration: grunt.file.readJSON("tslint.json")
             },
-            dev: {
+            app: {
                 src: "<%= paths.src %>/**/*.ts"
             },
             test: {
@@ -170,9 +170,9 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask("build", ["tslint:dev", "typescript:dist", "jshint:dist", "requirejs", "typescript:node", "jshint:node"]);
-    grunt.registerTask("dev", ["tslint:dev", "typescript:dev", "jshint:dev"]);
-    grunt.registerTask("test", ["tslint:test", "dev", "typescript:test", "jshint:test", "mocha:test"]);
+    grunt.registerTask("dev", ["tslint:app", "typescript:dev", "jshint:dev"]);
+    grunt.registerTask("build", ["tslint:app", "typescript:dist", "jshint:dist", "requirejs", "typescript:node", "jshint:node"]);
+    grunt.registerTask("test", ["dev", "tslint:test", "typescript:test", "jshint:test", "mocha:test"]);
     grunt.registerTask("nuget", ["nugetpack", "nugetpush"]);
 
     grunt.registerTask("default", ["clean", "build", "test"]);
