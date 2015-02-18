@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 module.exports = function (grunt) {
-    require('load-grunt-tasks')(grunt); // Load grunt tasks automatically
+    require('jit-grunt')(grunt); // Load grunt tasks automatically
     require('time-grunt')(grunt); // Time how long tasks take. Can help when optimizing build times
 
     var options = {
@@ -87,7 +87,7 @@ module.exports = function (grunt) {
             test: {
                 options: {
                     '-W030': true,
-                    '-W068': true,
+                    '-W068': true
                 },
                 src: "<%= paths.test %>/**/*.js"
             }
