@@ -1,22 +1,26 @@
-﻿'use strict';
+﻿"use strict";
 
 module.exports = function (grunt) {
-    require('jit-grunt')(grunt); // Load grunt tasks automatically
-    require('time-grunt')(grunt); // Time how long tasks take. Can help when optimizing build times
+    // Load grunt tasks automatically
+    require("jit-grunt")(grunt, {
+        nugetpack: "grunt-nuget",
+        nugetpush: "grunt-nuget"
+    }); 
+    require("time-grunt")(grunt); // Time how long tasks take. Can help when optimizing build times
 
     var options = {
-        dev: grunt.option('dev')
+        dev: grunt.option("dev")
     };
 
     // Define the configuration for all the tasks
     grunt.initConfig({
         // Configurable paths
         paths: {
-            src: 'src',
-            build: 'dist',
-            lib: 'lib',
-            temp: '.temp',
-            test: 'tests'
+            src: "src",
+            build: "dist",
+            lib: "lib",
+            temp: ".temp",
+            test: "tests"
         },
         pkg: grunt.file.readJSON("package.json"),
 
@@ -43,7 +47,7 @@ module.exports = function (grunt) {
                 src: "<%= paths.src %>/**/*.ts",
                 dest: "<%= paths.build %>/",
                 options: {
-                    basePath: '<%= paths.src %>'
+                    basePath: "<%= paths.src %>"
                 }
             },
             node: {
@@ -52,7 +56,7 @@ module.exports = function (grunt) {
                 options: {
                     target: "es5",
                     module: "commonjs",
-                    basePath: '<%= paths.src %>'
+                    basePath: "<%= paths.src %>"
                 }
             }
         },
@@ -70,7 +74,7 @@ module.exports = function (grunt) {
                         "promise/class",
                         "promise/extensions"
                     ],
-                    insertRequire: ['promise']
+                    insertRequire: ["promise"]
                 }
             }
         },
@@ -86,8 +90,8 @@ module.exports = function (grunt) {
             dist: ["<%= paths.build %>/**/*.js", "!<%= paths.build %>/**/*.min.js"],
             test: {
                 options: {
-                    '-W030': true,
-                    '-W068': true
+                    "-W030": true,
+                    "-W068": true
                 },
                 src: "<%= paths.test %>/**/*.js"
             }
@@ -153,19 +157,19 @@ module.exports = function (grunt) {
 
         watch: {
             tslint: {
-                files: ['<%= tslint.dev.src %>'],
-                tasks: ['tslint:dev']
+                files: ["<%= tslint.dev.src %>"],
+                tasks: ["tslint:dev"]
             },
             jshint: {
-                files: ['<%= jshint.dev.src %>'],
-                tasks: ['jshint:dev']
+                files: ["<%= jshint.dev.src %>"],
+                tasks: ["jshint:dev"]
             },
             test: {
-                files: ['<%= paths.test %>/*.*'],
-                tasks: ['test']
+                files: ["<%= paths.test %>/*.*"],
+                tasks: ["test"]
             },
             gruntfile: {
-                files: ['Gruntfile.js']
+                files: ["Gruntfile.js"]
             }
         }
     });
